@@ -1,87 +1,3 @@
-function basic() {
-  fetch("https://engine.freerice.com/games", {
-    headers: {
-      accept: "*/*",
-      "accept-language": "en-US,en;q=0.9",
-      "content-type": "application/json",
-      priority: "u=1, i",
-      "sec-ch-ua": '"Not;A=Brand";v="24", "Chromium";v="128"',
-      "sec-ch-ua-mobile": "?0",
-      "sec-ch-ua-platform": '"Linux"',
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "same-site",
-    },
-    referrerPolicy: "same-origin",
-    body: '{"category":"66f2a9aa-bac2-5919-997d-2d17825c1837","level":1,"user":null}',
-    method: "POST",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data.data);
-      console.log(data.data.attributes.question.text);
-      var numbers = data.data.attributes.question.text.split(" x ");
-      answer = numbers[0] * numbers[1];
-      console.log(answer);
-      answerId = data.data.attributes.question.options.find(
-        (option) => Number(option.text) === answer
-      ).id;
-      fetch(`https://engine.freerice.com/games/${data.data.id}/answer`, {
-        headers: {
-          accept: "*/*",
-          "accept-language": "en-US,en;q=0.9",
-          "cache-control": "no-cache",
-          "content-type": "application/json",
-          pragma: "no-cache",
-          priority: "u=1, i",
-          "sec-ch-ua": '"Not;A=Brand";v="24", "Chromium";v="128"',
-          "sec-ch-ua-mobile": "?0",
-          "sec-ch-ua-platform": '"Linux"',
-          "sec-fetch-dest": "empty",
-          "sec-fetch-mode": "cors",
-          "sec-fetch-site": "same-site",
-        },
-        referrerPolicy: "same-origin",
-        body: `{"answer":"${answerId}","question":"${data.data.attributes.question_id}","user":null}`,
-        method: "PATCH",
-      })
-        .then((data) => data.json())
-        .then((data) => {
-          console.log(data.data);
-          console.log(data.data.attributes.question.text);
-          var numbers = data.data.attributes.question.text.split(" x ");
-          answer = numbers[0] * numbers[1];
-          console.log(answer);
-          answerId = data.data.attributes.question.options.find(
-            (option) => Number(option.text) === answer
-          ).id;
-          fetch(`https://engine.freerice.com/games/${data.data.id}/answer`, {
-            headers: {
-              accept: "*/*",
-              "accept-language": "en-US,en;q=0.9",
-              "cache-control": "no-cache",
-              "content-type": "application/json",
-              pragma: "no-cache",
-              priority: "u=1, i",
-              "sec-ch-ua": '"Not;A=Brand";v="24", "Chromium";v="128"',
-              "sec-ch-ua-mobile": "?0",
-              "sec-ch-ua-platform": '"Linux"',
-              "sec-fetch-dest": "empty",
-              "sec-fetch-mode": "cors",
-              "sec-fetch-site": "same-site",
-            },
-            referrerPolicy: "same-origin",
-            body: `{"answer":"${answerId}","question":"${data.data.attributes.question_id}","user":null}`,
-            method: "PATCH",
-          })
-            .then((data) => data.json())
-            .then((data) => {
-              console.log(data);
-              return data;
-            });
-        });
-    });
-}
 function start() {
   return fetch("https://engine.freerice.com/games", {
     headers: {
@@ -155,4 +71,5 @@ async function feed(repeater) {
     console.log("Total rice: " + beginning.data.attributes.rice);
   }
 }
-feed(100);
+//change this to change how many questions are answered. Rice to question ratio is ten to one.
+feed(1000);
